@@ -9,7 +9,7 @@ def __main__(args):
     possible_routes = graph.find_paths(linked_graph[args.start],target_nodes)
     sorted_possible_routes = sorted(possible_routes,key=len)
     for s in sorted_possible_routes[:10]:
-        print(",".join(s))
+        print(",".join(map(lambda x:x['id'],s)))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Path find over railML')

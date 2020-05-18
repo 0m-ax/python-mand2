@@ -24,7 +24,7 @@ def find_paths(current_node,target_nodes,max_visits=2,path=[]):
         possible_routes.append(new_path)
         return possible_routes
     for n in current_node["joins"]:
-        output = find_paths(n,target_nodes,new_path)
+        output = find_paths(n,target_nodes,max_visits,new_path)
         if len(output) > 0:
             possible_routes.extend(output)
     return possible_routes

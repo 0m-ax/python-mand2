@@ -12,6 +12,13 @@ class railMLDoc:
         self.elements_id_map = railMLDoc.build_id_map(root)
         self.root = root
 
+    def deref(self,element):
+        """Turns a <element ref="id"> element into element refrenced"""
+        ref = element.get("ref")
+        if ref is not None:
+            return self.elements_id_map[ref]
+        return element
+
     def deref_iter(self,input_iter):
         """Performs deref over an iterator"""
         it = iter(input_iter)
@@ -20,16 +27,15 @@ class railMLDoc:
                 yield self.deref(next(it))
         except StopIteration:
             pass
-
-    def deref(self,element):
-        """Turns a <element ref="id"> element into element refrenced"""
-        ref = element.get("ref")
-        if ref is not None:
-            return self.elements_id_map[ref]
-        return element
+    def to_graph_track(self):
+        print(self.root.find('railML:railml', railML_ns))
 
     def to_graph(self,level_id):
-        """Converts the railML document into a a unlinked graph"""
+        """Converts the railML document into a a unlinked graph  
+        {
+            "nodeID":["nodeID",...]
+        }
+        """
         level = self.elements_id_map[level_id]
         graph = {}
         for networkResource in self.deref_iter(level.findall('railML:networkResource', railML_ns)):
